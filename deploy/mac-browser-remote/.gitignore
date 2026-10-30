@@ -1,0 +1,8 @@
+.env
+backups/
+__pycache__/
+*.pyc
+*.key
+*.conf
+!*.conf.example
+

@@ -1,0 +1,6 @@
+{$PUBLIC_DOMAIN} {
+	redir / /guacamole/ 302
+	reverse_proxy guacamole:8080 {
+		flush_interval -1
+	}
+}

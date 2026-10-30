@@ -1,0 +1,36 @@
+services:
+  guacamole:
+    environment:
+      REMOTE_IP_VALVE_ENABLED: "true"
+
+  caddy:
+    image: caddy:2.11.7-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f
+    restart: unless-stopped
+    environment:
+      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN:?Set PUBLIC_DOMAIN in .env first}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [web]
+
+  guacd:
+    networks:
+      desktop:
+        ipv4_address: 172.30.66.2
+
+networks:
+  desktop:
+    driver_opts:
+      com.docker.network.bridge.name: br-mac-remote
+    ipam:
+      config:
+        - subnet: 172.30.66.0/24
+
+volumes:
+  caddy_data:
+  caddy_config:
+
